@@ -12,9 +12,9 @@ module ShippingMaterials
     end
 
     def row(hash)
-      if hash.first.is_a? Hash
+      if [Hash, Array].include? hash.first[1].class
         context = hash.keys.first
-        @row_maps[context] = hash[context]
+        @row_maps[context.to_sym] = hash[context]
       else
         @row_maps[:object] = hash
       end

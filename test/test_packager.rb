@@ -85,4 +85,23 @@ class PackagerTest < Test::Unit::TestCase
                 @packager.groups.first.labels.first.headers,
                 "Label headers are wrong"
   end
+
+  def test_should_accept_multiple_row_maps_in_different_contexts
+    @packager.package orders do
+      group 'canada_standard_post' do
+        filter { shipping_method == 'std' && country == 'CA' }
+        labels :extension => 'csv', :headers => true do
+          row :order_id => :id,
+              :name     => :name,
+              :static_fields => 'Use a string'
+
+          row :line_items => [ :id, :name, :quantity, :price ]
+        end
+      end
+    end
+
+    assert_equal [:object, :line_items],
+                @packager.groups.first.labels.first.row_maps.keys,
+                "Row maps aren't getting keyed"
+  end
 end
