@@ -34,7 +34,7 @@ module ShippingMaterials
     end
 
     def headers
-      @row_map.keys if @row_map
+      @row_map.keys.map {|k| k.to_s } if @row_map
     end
 
     def headers?

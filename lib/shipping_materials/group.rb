@@ -18,6 +18,7 @@ module ShippingMaterials
     def labels(options={}, &block)
       if options.any?
         @labels = Label.new(@objects, options)
+        @labels.instance_eval(&block) if block
       else
         @labels
       end

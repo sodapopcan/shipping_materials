@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'debugger'
 
 require File.expand_path('../data.rb', __FILE__)
 
@@ -79,8 +80,8 @@ class PackagerTest < Test::Unit::TestCase
       end
     end
 
-    assert_equal %w(order_id name static field),
-                 @packager.groups.first.labels.headers,
-                 "Label headers are wrong"
+    assert_equal ['order_id', 'name', 'static_field'],
+                @packager.groups.first.labels.headers,
+                "Label headers are wrong"
   end
 end
