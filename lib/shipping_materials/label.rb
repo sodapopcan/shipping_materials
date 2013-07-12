@@ -2,7 +2,7 @@ module ShippingMaterials
   class Label
     require 'csv'
 
-    attr_accessor :context
+    attr_accessor :context, :row_maps, :headers
 
     def initialize(objects, options={})
       @objects = objects
@@ -14,9 +14,11 @@ module ShippingMaterials
     def row(hash)
       if hash.first.is_a? Hash
         @context = hash.keys.first
-        @row_maps[@context] = hash[@context]
+        @row_maps[@context] = hash[@context].values
+        @headers = hash[@context].keys
       else
-        @row_maps[:object] = hash
+        @row_maps[:object] = hash.values
+        @headers = hash.keys.map {|k| k.to_s } if @row_maps
       end
     end
 
@@ -32,10 +34,6 @@ module ShippingMaterials
 
     def extension
       @options[:extension]
-    end
-
-    def headers
-      @row_maps.first[1].keys.map {|k| k.to_s } if @row_maps
     end
 
     def headers?

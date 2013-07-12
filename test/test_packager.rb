@@ -83,5 +83,8 @@ class PackagerTest < Test::Unit::TestCase
     assert_equal ['order_id', 'name', 'static_field'],
                 @packager.groups.first.labels.headers,
                 "Label headers are wrong"
+    assert_equal [:id, :name, 'Use a string'],
+                @packager.groups.first.labels.row_maps[:object],
+                "Row map does not match."
   end
 end
