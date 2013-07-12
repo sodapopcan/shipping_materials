@@ -7,15 +7,16 @@ module ShippingMaterials
     def initialize(objects, options={})
       @objects = objects
       @rows = []
+      @row_maps = {}
       @options = options
     end
 
     def row(hash)
       if hash.first.is_a? Hash
         @context = hash.keys.first
-        @row_map = hash[@context]
+        @row_maps[@context] = hash[@context]
       else
-        @row_map = hash
+        @row_maps[:object] = hash
       end
     end
 
@@ -34,7 +35,7 @@ module ShippingMaterials
     end
 
     def headers
-      @row_map.keys.map {|k| k.to_s } if @row_map
+      @row_maps.first[1].keys.map {|k| k.to_s } if @row_maps
     end
 
     def headers?
