@@ -1,4 +1,5 @@
 require 'test/unit'
+
 require 'debugger'
 
 require File.expand_path('../data.rb', __FILE__)
@@ -64,7 +65,7 @@ class PackagerTest < Test::Unit::TestCase
 
     assert_block "Label options are not getting set" do
       labels = @packager.groups.first.labels
-      labels.extension == 'csv' && labels.headers?
+      labels.first.extension == 'csv' && labels.first.headers?
     end
   end
 
@@ -81,10 +82,7 @@ class PackagerTest < Test::Unit::TestCase
     end
 
     assert_equal ['order_id', 'name', 'static_field'],
-                @packager.groups.first.labels.headers,
+                @packager.groups.first.labels.first.headers,
                 "Label headers are wrong"
-    assert_equal [:id, :name, 'Use a string'],
-                @packager.groups.first.labels.row_maps[:object],
-                "Row map does not match."
   end
 end

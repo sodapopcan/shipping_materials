@@ -3,13 +3,12 @@ module ShippingMaterials
     attr_accessor :objects, :filename
 
     def initialize(filename, objects)
-      @filename = filename
-      @objects = objects
-      @labels ||= []
+      @filename  = filename
+      @objects   = objects
+      @labels    = []
       @extension = 'csv'
-      @headers = false
+      @headers   = false
     end
-
 
     def filter(&block)
       @objects = @objects.select {|o| o.instance_eval(&block) }
@@ -17,8 +16,10 @@ module ShippingMaterials
 
     def labels(options={}, &block)
       if options.any?
-        @labels = Label.new(@objects, options)
-        @labels.instance_eval(&block) if block
+        label = Label.new(@objects, options)
+        label.instance_eval(&block) if block
+
+        @labels << label
       else
         @labels
       end
