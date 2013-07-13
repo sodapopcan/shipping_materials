@@ -1,11 +1,8 @@
 require File.expand_path('../header', __FILE__)
 
 class LabelTest < UnitTest
-  def setup
-    @label = ShippingMaterials::Label.new(orders)
-  end
-
   def test_row_array
+    @label = ShippingMaterials::Label.new(orders)
     array = [:hello, :goodbye, 'Hello there']
 
     @label.row(array)
@@ -15,6 +12,7 @@ class LabelTest < UnitTest
   end
 
   def test_row_hash
+    @label = ShippingMaterials::Label.new(orders, headers: true)
     hash = { :order_id => :id,
              :name     => :name,
              :static_field => 'A string' }
@@ -28,6 +26,7 @@ class LabelTest < UnitTest
   end
 
   def test_row_hash_with_array
+    @label = ShippingMaterials::Label.new(orders)
     hash = { :line_items => [:hello, :goodbye, 'Hello there'] }
 
     @label.row(hash)
@@ -38,6 +37,7 @@ class LabelTest < UnitTest
   end
 
   def test_row_hash_with_hash
+    @label = ShippingMaterials::Label.new(orders, headers: true)
     hash = {
       :line_items => {
         :order_id => :id,
@@ -56,6 +56,7 @@ class LabelTest < UnitTest
   end
 
   def test_row_multi_call
+    @label = ShippingMaterials::Label.new(orders, headers: true)
     hash1 = {
       :order_id => :id,
       :name     => :name,
@@ -78,7 +79,8 @@ class LabelTest < UnitTest
   end
 
   def test_to_csv
-    @label = ShippingMaterials::Label.new(orders.select {|o| o.id == 1 })
+    @label = ShippingMaterials::Label.new orders.select {|o| o.id == 1 },
+                                          headers: true
     @label.row :order_id => :id,
                :name     => :name,
                :static_fields => 'A string'

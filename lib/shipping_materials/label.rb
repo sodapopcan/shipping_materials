@@ -2,7 +2,7 @@ module ShippingMaterials
   class Label
     require 'csv'
 
-    attr_accessor :objects, :row_maps, :headers
+    attr_accessor :objects, :row_maps
 
     def initialize(objects, options={})
       @objects = objects
@@ -20,10 +20,10 @@ module ShippingMaterials
         if hash_or_array.first[1].is_a? Array
           @row_maps[hash_or_array.first[0]] = hash_or_array.first[1]
         elsif hash_or_array.first[1].is_a? Hash
-          @headers ||= hash_or_array.first[1].keys.map {|h| h.to_s }
+          self.headers = hash_or_array.first[1]
           @row_maps[hash_or_array.first[0]] = hash_or_array.first[1].values
         else
-          @headers ||= hash_or_array.keys.map {|h| h.to_s }
+          self.headers ||= hash_or_array
           @row_maps[:object] = hash_or_array.values
         end
       end
@@ -53,8 +53,16 @@ module ShippingMaterials
       @options[:extension]
     end
 
+		def headers
+			@headers
+		end
+
+		def headers=(object)
+			@headers ||= object.keys.map {|h| h.to_s } if self.headers?
+		end
+
     def headers?
-      @headers
+      @options[:headers]
     end
 
     private
