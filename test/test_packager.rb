@@ -59,24 +59,6 @@ class PackagerTest < UnitTest
     end
   end
 
-  def test_row_should_set_headers
-    @packager.package orders do
-      group 'canada_standard_post' do
-        filter { shipping_method == 'std' && country == 'CA' }
-        # labels :csv => 'path/to/template'
-        labels :extension => 'csv', :headers => true do
-          row :order_id => :id,
-              :name     => :name,
-              :static_field => 'Use a string'
-        end
-      end
-    end
-
-    assert_equal ['order_id', 'name', 'static_field'],
-                @packager.groups.first.labels.first.headers,
-                "Label headers are wrong"
-  end
-
   def test_should_accept_multiple_row_maps_in_different_contexts
     @packager.package orders do
       group 'canada_standard_post' do

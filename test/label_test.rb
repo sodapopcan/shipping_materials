@@ -76,4 +76,22 @@ class LabelTest < UnitTest
     assert_equal %w(order_id name static_fields), @label.headers,
                 "Headers should not be overwritten by secondary call to row"
   end
+
+  def test_to_csv
+    @label = ShippingMaterials::Label.new(orders.select {|o| o.id == 1 })
+    @label.row :order_id => :id,
+               :name     => :name,
+               :static_fields => 'A string'
+
+    @label.row :line_items => [:id, :name, :quantity]
+
+output = %Q|
+order_id,name,static_fields
+1,Andrew,A string
+1,Plague Soundscapes,3
+2,Surfer Rosa,1
+|
+    assert_equal output.strip, @label.to_csv.strip,
+                "Label not properly converting to CSV"
+  end
 end

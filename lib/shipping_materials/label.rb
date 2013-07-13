@@ -2,7 +2,7 @@ module ShippingMaterials
   class Label
     require 'csv'
 
-    attr_accessor :row_maps, :headers
+    attr_accessor :objects, :row_maps, :headers
 
     def initialize(objects, options={})
       @objects = objects
@@ -32,19 +32,17 @@ module ShippingMaterials
     def to_csv
       CSV.generate do |csv|
         csv << headers if headers?
-        contexts = @row_maps.keys
         @objects.each do |object|
-          @row_maps.each do |context, row|
+          @row_maps.each do |context, methods|
             if context == :object
-              row.map do |o|
-                object.send(o) if o.is_a? Symbol
-                o if o.is_a? String
+              csv << get_row(object, methods)
+            else
+              object.send(context).each do |c|
+                csv << get_row(c, methods)
               end
             end
-
           end
         end
-        csv.concat
       end
     end
 
@@ -56,7 +54,20 @@ module ShippingMaterials
     end
 
     def headers?
-      @options[:headers]
+      @headers
     end
+
+    private
+
+    def get_row(object, methods)
+      methods.map do |meth|
+        if meth.is_a? Symbol
+          object.send(meth)
+        elsif meth.is_a? String
+          meth
+        end
+      end
+    end
+
   end
 end
