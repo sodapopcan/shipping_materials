@@ -23,7 +23,7 @@ module ShippingMaterials
           self.headers = hash_or_array.first[1]
           @row_maps[hash_or_array.first[0]] = hash_or_array.first[1].values
         else
-          self.headers ||= hash_or_array
+          self.headers = hash_or_array
           @row_maps[:object] = hash_or_array.values
         end
       end
