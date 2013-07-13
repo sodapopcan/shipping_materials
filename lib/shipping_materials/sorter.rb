@@ -4,7 +4,7 @@ module ShippingMaterials
       @rules = []
     end
 
-    def sort_rule(&block)
+    def rule(&block)
       @rules << block
     end
 
@@ -23,12 +23,6 @@ module ShippingMaterials
 
       i += 1
       ( sort(a, i) + sort(b, i) ).compact
-    end
-
-    protected
-
-    def rule(&block)
-      @rules << block
     end
   end
 end

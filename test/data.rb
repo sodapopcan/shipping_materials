@@ -70,8 +70,64 @@ module TestData
     li.id       = 4
     li.name     = 'The Immaculate Collection'
     li.type     = 'Vinyl'
+    li.quantity = 3
+    li.price    = 20
+    o.line_items << li
+
+    li = TestModels::LineItem.new
+    li.id       = 9
+    li.name     = '()'
+    li.type     = 'CD'
+    li.quantity = 5
+    li.price    = 20
+    o.line_items << li
+
+    li = TestModels::LineItem.new
+    li.id       = 10
+    li.name     = 'Siamese Dream'
+    li.type     = 'CD'
+    li.quantity = 2
+    li.price    = 20
+    o.line_items << li
+
+    li = TestModels::LineItem.new
+    li.id       = 11
+    li.name     = 'Parklife'
+    li.type     = 'CD'
     li.quantity = 1
     li.price    = 20
+    o.line_items << li
+
+    li = TestModels::LineItem.new
+    li.id       = 12
+    li.name     = 'The Eldrich Dark'
+    li.type     = 'Vinyl'
+    li.quantity = 1
+    li.price    = 20
+    o.line_items << li
+
+    li = TestModels::LineItem.new
+    li.id       = 13
+    li.name     = 'Totally Krossed Out'
+    li.type     = 'Cassette'
+    li.quantity = 1
+    li.price    = 8
+    o.line_items << li
+
+    li = TestModels::LineItem.new
+    li.id       = 14
+    li.name     = 'Schubert Dip'
+    li.type     = 'Cassette'
+    li.quantity = 1
+    li.price    = 12
+    o.line_items << li
+
+    li = TestModels::LineItem.new
+    li.id       = 15
+    li.name     = 'Please Hammer, Don\'t Hurt \'Em'
+    li.type     = 'CD'
+    li.quantity = 10
+    li.price    = 12
     o.line_items << li
 
     orders << o
