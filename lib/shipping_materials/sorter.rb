@@ -1,18 +1,18 @@
-module ShippingMaterial
+module ShippingMaterials
   class Sorter
-    def initialize(objects)
-      @objects = objects
+    def initialize
       @rules = []
     end
 
     def sort_rule(&block)
-      instance_eval(&block)
+      @rules << block
     end
 
     def sort(items, i = 0)
-      return items unless @rules[i]
-      return items if items.size < 2
+      return items if !@rules[i] || items.size < 2
+
       a, b = [], []
+
       items.each do |item|
         if item.instance_eval(&@rules[i])
           a << item
@@ -20,9 +20,9 @@ module ShippingMaterial
           b << item
         end
       end
+
       i += 1
-      items = sort(a, i) + sort(b, i)
-      items.compact!
+      ( sort(a, i) + sort(b, i) ).compact
     end
 
     protected
