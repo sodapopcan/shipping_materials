@@ -2,7 +2,7 @@ module ShippingMaterials
   class Label
     require 'csv'
 
-    attr_accessor :row_maps
+    attr_accessor :row_maps, :headers
 
     def initialize(objects, options={})
       @objects = objects
@@ -11,19 +11,40 @@ module ShippingMaterials
       @options = options
     end
 
-    def row(hash)
-      if [Hash, Array].include? hash.first[1].class
-        context = hash.keys.first
-        @row_maps[context.to_sym] = hash[context]
-      else
-        @row_maps[:object] = hash
+    # This method is on the complex side. It is a DSL method that performs
+    # type-checking and also sets the headers.
+    def row(hash_or_array)
+      if hash_or_array.is_a? Array
+        @row_maps[:object] = hash_or_array
+      elsif hash_or_array.is_a? Hash
+        if hash_or_array.first[1].is_a? Array
+          @row_maps[hash_or_array.first[0]] = hash_or_array.first[1]
+        elsif hash_or_array.first[1].is_a? Hash
+          @headers ||= hash_or_array.first[1].keys.map {|h| h.to_s }
+          @row_maps[hash_or_array.first[0]] = hash_or_array.first[1].values
+        else
+          @headers ||= hash_or_array.keys.map {|h| h.to_s }
+          @row_maps[:object] = hash_or_array.values
+        end
       end
     end
 
     def to_csv
       CSV.generate do |csv|
         csv << headers if headers?
-        csv.concat(@rows)
+        contexts = @row_maps.keys
+        @objects.each do |object|
+          @row_maps.each do |context, row|
+            if context == :object
+              row.map do |o|
+                object.send(o) if o.is_a? Symbol
+                o if o.is_a? String
+              end
+            end
+
+          end
+        end
+        csv.concat
       end
     end
 
@@ -32,10 +53,6 @@ module ShippingMaterials
 
     def extension
       @options[:extension]
-    end
-
-    def headers
-      @row_maps.first[1].keys.map {|k| k.to_s } if @row_maps
     end
 
     def headers?
