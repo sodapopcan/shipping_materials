@@ -87,12 +87,11 @@ class LabelTest < UnitTest
 
     @label.row :line_items => [:id, :name, :quantity]
 
-output = %Q|
-order_id,name,static_fields
-1,Andrew,A string
-1,Plague Soundscapes,3
-2,Surfer Rosa,1
-|
+    output = "order_id,name,static_fields\n" \
+             "1,Andrew,A string\n" \
+             "1,Plague Soundscapes,3\n" \
+             "2,Surfer Rosa,1"
+
     assert_equal output.strip, @label.to_csv.strip,
                 "Label not properly converting to CSV"
   end
