@@ -1,16 +1,6 @@
-require 'test/unit'
+require File.expand_path('../header', __FILE__)
 
-require 'debugger'
-
-require File.expand_path('../data.rb', __FILE__)
-
-Dir.glob('lib/shipping_materials/*.rb').each do |file|
-  require File.expand_path("../../#{file}", __FILE__)
-end
-
-class PackagerTest < Test::Unit::TestCase
-  include TestData
-
+class PackagerTest < UnitTest
   def setup
     @packager = ShippingMaterials::Packager.new
   end
@@ -23,7 +13,7 @@ class PackagerTest < Test::Unit::TestCase
     end
   end
 
-  def test_group
+  def test_packager_group
     @packager.package(orders) { group 'canada_standard_post' }
 
     assert_equal 1, @packager.groups.size,
@@ -32,7 +22,7 @@ class PackagerTest < Test::Unit::TestCase
                 "Group filename not getting set"
   end
 
-  def test_multiple_groups
+  def test_packaging_multiple_groups
     @packager.package(orders) do
       group 'canada_standard_post'
       group 'united_states_ups'
@@ -73,6 +63,7 @@ class PackagerTest < Test::Unit::TestCase
     @packager.package orders do
       group 'canada_standard_post' do
         filter { shipping_method == 'std' && country == 'CA' }
+        # labels :csv => 'path/to/template'
         labels :extension => 'csv', :headers => true do
           row :order_id => :id,
               :name     => :name,
