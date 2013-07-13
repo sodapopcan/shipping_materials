@@ -3,7 +3,9 @@ module TestModels
     attr_accessor :id, :date, :name, :address, :email, :phone, :country,
                   :shipping_method, :line_items
 
-    def line_items; [] end
+    def initialize
+      @line_items = []
+    end
   end
 
   class LineItem
