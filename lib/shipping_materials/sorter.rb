@@ -1,11 +1,11 @@
 module ShippingMaterial
   class Sorter
-    def initialize(orders)
-      @orders = orders
+    def initialize(objects)
+      @objects = objects
       @rules = []
     end
 
-    def sort_rules(&block)
+    def sort_rule(&block)
       instance_eval(&block)
     end
 
