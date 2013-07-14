@@ -9,11 +9,11 @@ module ShippingMaterials
       @rules << block
     end
 
-		def each_by(attr)
-			@attr_callbacks << attr
-		end
+    def each_by(attr)
+      @attr_callbacks << attr
+    end
 
-    def sort(items, i = 0)
+    def sort(items, i=0)
       return items if !@rules[i] || items.size < 2
 
       a, b = [], []
@@ -32,6 +32,7 @@ module ShippingMaterials
       i += 1
       ( sort(a, i) + sort(b, i) ).compact
     end
+
 
 		private
 
