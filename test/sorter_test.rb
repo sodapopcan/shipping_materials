@@ -25,4 +25,16 @@ class SorterTest < UnitTest
                 sorted.slice(0, 6).map {|o| o.id },
                 "Simple one-rule sort didn't seem to work"
   end
+
+  def test_callbacks
+    add_multiple_rules
+
+    @sorter.each_by(:quantity)
+
+    sorted = @sorter.sort(self.dereks_orders)
+
+    assert_equal [15, 10, 9, 11],
+                sorted.slice(0, 4).map {|o| o.id },
+                "Callback sort is not working"
+  end
 end

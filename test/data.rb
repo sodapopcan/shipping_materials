@@ -78,7 +78,7 @@ module TestData
     li.id       = 9
     li.name     = '()'
     li.type     = 'CD'
-    li.quantity = 5
+    li.quantity = 2
     li.price    = 20
     o.line_items << li
 
@@ -86,7 +86,7 @@ module TestData
     li.id       = 10
     li.name     = 'Siamese Dream'
     li.type     = 'CD'
-    li.quantity = 2
+    li.quantity = 5
     li.price    = 20
     o.line_items << li
 
