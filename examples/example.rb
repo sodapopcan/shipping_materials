@@ -8,6 +8,8 @@ packager.package orders do
 
   sort(:line_items) {
     rule { type == 'Vinyl' }
+    rule { type == 'CD' }
+    rule { type == 'Cassette' }
 
     after_each_by_attr_desc(:quantity)
   }
@@ -20,7 +22,7 @@ packager.package orders do
     filter { country == 'CA' && shipping_method == 'std' }
 
     csv(extenstion: 'txt', headers: true) {
-      row code:     :'Q',
+      row code:     'Q',
           order_id: :id,
           hello:    :hello
 
