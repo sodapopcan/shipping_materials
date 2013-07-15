@@ -5,8 +5,9 @@ module ShippingMaterials
 	attr_reader :rendered
 
   class Template < Mustache
-    def initialize(objects)
+    def initialize(objects, filename)
       @objects  = objects
+			@filename = filename
       @rendered = ''
     end
 
@@ -23,6 +24,13 @@ module ShippingMaterials
 
 		def to_s
 			@rendered
+		end
+
+		def to_pdf
+			fhtml = "/tmp/#{File.basename(@filename)}.html"
+			fpdf = "~/#{File.basename(@filename)}.pdf"
+			File.open(fhtml, 'w') {|f| f.write(@rendered) }
+			%x( wkhtmltopdf #{fhtml} #{fpdf} )
 		end
 
 
