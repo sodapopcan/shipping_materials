@@ -12,6 +12,8 @@ module ShippingMaterials
 			@footer = ''
     end
 
+		# Gotta refactor this to use Mustache partials
+		# This is embarrassing yet I am moving on
     def layout_file=(name)
       layout = File.read("#{template_path}/#{name}")
       @header, @footer = layout.split(/{{yield}}/)
