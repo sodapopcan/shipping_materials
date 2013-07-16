@@ -3,6 +3,7 @@ require 'debugger'
 
 require File.expand_path('../data.rb', __FILE__)
 
+require File.expand_path('../../lib/shipping_materials.rb', __FILE__)
 Dir.glob('lib/shipping_materials/*.rb').each do |file|
   require File.expand_path("../../#{file}", __FILE__)
 end

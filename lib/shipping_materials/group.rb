@@ -23,11 +23,6 @@ module ShippingMaterials
       else
         @labels
       end
-
-      # @labels = Label.new(@objects, options)
-      # @objects.each do |object|
-      #   @labels.instance_eval(object.to_a)
-      # end
     end
   end
 end
