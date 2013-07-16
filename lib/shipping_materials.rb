@@ -1,4 +1,4 @@
-require "shipping_materials/version"
+Dir["lib/shipping_materials/*.rb"].each {|f| require f }
 
 module ShippingMaterials
   def self.config
