@@ -4,7 +4,7 @@ require File.expand_path('../../lib/shipping_materials.rb', __FILE__)
 class ConfigTest < TestCase
   def test_config
     ShippingMaterials.config do |config|
-      config.save_path './test/files'
+      config.save_path = './test/files'
     end
 
     assert_equal './test/files', ShippingMaterials::Config.save_path,
