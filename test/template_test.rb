@@ -1,8 +1,7 @@
 require File.expand_path('../header', __FILE__)
 
-class TemplateTest < UnitTest
+class TemplateTest < TestCase
   def setup
-		ShippingMaterials::Config.save_path './test/files'
     @tpl = ShippingMaterials::Template.new(orders.slice(0,2), 'test')
     @tpl.template_file = 'test/template.mustache'
     @tpl.layout_file = 'test/layout.mustache'

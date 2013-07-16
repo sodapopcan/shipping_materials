@@ -1,6 +1,6 @@
 require File.expand_path('../header', __FILE__)
 
-class LabelTest < UnitTest
+class LabelTest < TestCase
   def test_row_array
     @label = ShippingMaterials::Label.new(orders)
     array = [:hello, :goodbye, 'Hello there']

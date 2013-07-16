@@ -1,6 +1,6 @@
 require File.expand_path('../header', __FILE__)
 
-class PackagerTest < UnitTest
+class PackagerTest < TestCase
   def setup
     @packager = ShippingMaterials::Packager.new
   end
