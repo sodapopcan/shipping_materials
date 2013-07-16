@@ -37,10 +37,10 @@ module ShippingMaterials
     end
 
     def to_pdf
-      fhtml = "/tmp/#{File.basename(@filename)}.html"
-      fpdf = "~/#{File.basename(@filename)}.pdf"
-      File.open(fhtml, 'w') {|f| f.write(@rendered) }
-      %x( wkhtmltopdf #{fhtml} #{fpdf} )
+			base = "#{Config.save_path}/#{File.basename(@filename)}"
+			html, pdf = base + '.html', base + '.pdf'
+      File.open(html, 'w') {|f| f.write(@rendered) }
+      %x( wkhtmltopdf #{html} #{pdf} )
     end
 
 
