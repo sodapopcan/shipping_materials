@@ -1,15 +1,21 @@
 require File.expand_path('../header', __FILE__)
 
-class SorterTest < UnitTest
+class SorterTest < TestCase
   def setup
     @sorter = ShippingMaterials::Sorter.new
   end
 
-  def dereks_orders
-    orders.select do |o|
-      o.name == 'Derek'
-    end.first.line_items
+  def dereks_order
+    orders.detect {|o| o.name == 'Derek' }
   end
+
+	def sort_derek(line_items = false)
+		if line_items
+			@sorter.sort(self.dereks_order.line_items)
+		else
+			@sorter.sort(self.dereks_order)
+		end
+	end
 
   def add_multiple_rules
     @sorter.rule { type == 'CD' }
@@ -19,7 +25,7 @@ class SorterTest < UnitTest
   def test_sort
     add_multiple_rules
 
-    sorted = @sorter.sort(self.dereks_orders)
+    sorted = sort_derek(true)
 
     assert_equal [9, 10, 11, 15, 13, 14],
                 sorted.slice(0, 6).map {|o| o.id },
@@ -31,7 +37,7 @@ class SorterTest < UnitTest
 
     @sorter.each_by(:quantity)
 
-    sorted = @sorter.sort(self.dereks_orders)
+    sorted = sort_derek(true)
 
     assert_equal [15, 10, 9, 11],
                 sorted.slice(0, 4).map {|o| o.id },

@@ -8,8 +8,8 @@ module ShippingMaterials
       @objects  = objects
       @filename = filename
       @rendered = ''
-			@header =''
-			@footer = ''
+			@header   = ''
+			@footer   = ''
     end
 
 		# Gotta refactor this to use Mustache partials
@@ -36,13 +36,6 @@ module ShippingMaterials
 
     def to_s
       @rendered
-    end
-
-    def to_pdf
-			base = "#{Config.save_path}/#{File.basename(@filename)}"
-			html, pdf = base + '.html', base + '.pdf'
-      File.open(html, 'w') {|f| f.write(@rendered) }
-      %x( wkhtmltopdf #{html} #{pdf} )
     end
 
 
