@@ -4,7 +4,8 @@ module ShippingMaterials
 
     attr_accessor :objects, :row_maps
 
-    def initialize(objects, options={})
+    def initialize(filename, objects, options={})
+      @filename = filename
       @objects  = objects
       @row_maps = {}
       @options  = options
@@ -12,16 +13,17 @@ module ShippingMaterials
 
     # This method is on the complex side. It is a DSL method that
 		# performs type-checking and also sets the headers.
-		# Be sure to see self.headers=()
+		# Be sure to see headers=() defined below
     def row(collection)
       if collection.is_a? Array
         @row_maps[:object] = collection
       elsif collection.is_a? Hash
-        if collection.first[1].is_a? Array
-          @row_maps[collection.first[0]] = collection.first[1]
-        elsif collection.first[1].is_a? Hash
+        f = collection.first
+        if ary[1].is_a? Array
+          @row_maps[f[0]] = f[1]
+        elsif f[1].is_a? Hash
           self.headers = collection.first[1]
-          @row_maps[collection.first[0]] = collection.first[1].values
+          @row_maps[f[0]] = f[1].values
         else
           self.headers = collection
           @row_maps[:object] = collection.values
@@ -46,11 +48,12 @@ module ShippingMaterials
       end
     end
 
-    def save(path)
-    end
-
     def extension
       @options[:extension]
+    end
+
+    def filename
+      @filename + ( self.extension.nil? ? '.csv' : self.extension )
     end
 
 		def headers
