@@ -18,7 +18,7 @@ module ShippingMaterials
 
     def labels(options={}, &block)
       if block
-        label = Label.new('filename', @objects, options)
+        label = Label.new(@objects, options)
         label.instance_eval(&block)
         @labels << label
       else

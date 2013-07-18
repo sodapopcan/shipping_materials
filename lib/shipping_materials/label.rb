@@ -4,8 +4,7 @@ module ShippingMaterials
 
     attr_accessor :objects, :row_maps
 
-    def initialize(filename, objects, options={})
-      @filename = filename
+    def initialize(objects, options={})
       @objects  = objects
       @row_maps = {}
       @options  = options
@@ -50,10 +49,6 @@ module ShippingMaterials
 
     def extension
       @options[:extension]
-    end
-
-    def filename
-      @filename + ( self.extension.nil? ? '.csv' : self.extension )
     end
 
 		def headers

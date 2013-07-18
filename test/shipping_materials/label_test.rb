@@ -2,7 +2,7 @@ require File.expand_path('../../header', __FILE__)
 
 class LabelTest < TestCase
   def test_row_array
-    @label = ShippingMaterials::Label.new('filename', orders)
+    @label = ShippingMaterials::Label.new(orders)
     array = [:hello, :goodbye, 'Hello there']
 
     @label.row(array)
@@ -12,7 +12,7 @@ class LabelTest < TestCase
   end
 
   def test_row_hash
-    @label = ShippingMaterials::Label.new('filename', orders, headers: true)
+    @label = ShippingMaterials::Label.new(orders, headers: true)
     hash = { :order_id => :id,
              :name     => :name,
              :static_field => 'A string' }
@@ -26,7 +26,7 @@ class LabelTest < TestCase
   end
 
   def test_row_hash_with_array
-    @label = ShippingMaterials::Label.new('filename', orders)
+    @label = ShippingMaterials::Label.new(orders)
     hash = { :line_items => [:hello, :goodbye, 'Hello there'] }
 
     @label.row(hash)
@@ -37,7 +37,7 @@ class LabelTest < TestCase
   end
 
   def test_row_hash_with_hash
-    @label = ShippingMaterials::Label.new('filename', orders, headers: true)
+    @label = ShippingMaterials::Label.new(orders, headers: true)
     hash = {
       :line_items => {
         :order_id => :id,
@@ -56,7 +56,7 @@ class LabelTest < TestCase
   end
 
   def test_row_multi_call
-    @label = ShippingMaterials::Label.new('filename', orders, headers: true)
+    @label = ShippingMaterials::Label.new(orders, headers: true)
     hash1 = {
       :order_id => :id,
       :name     => :name,
@@ -79,8 +79,7 @@ class LabelTest < TestCase
   end
 
   def test_to_csv
-    @label = ShippingMaterials::Label.new 'filename',
-                                          orders.select {|o| o.id == 1 },
+    @label = ShippingMaterials::Label.new orders.select {|o| o.id == 1 },
                                           headers: true
     @label.row :order_id => :id,
                :name     => :name,
