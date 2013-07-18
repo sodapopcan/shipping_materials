@@ -1,4 +1,4 @@
-require File.expand_path('../header', __FILE__)
+require File.expand_path('../../header', __FILE__)
 
 class PackagerTest < TestCase
   def setup
@@ -11,15 +11,6 @@ class PackagerTest < TestCase
     assert_block "Format should have type and template" do
       @packager.format == :pdf && @packager.template == 'path/to/template'
     end
-  end
-
-  def test_packager_group
-    @packager.package(orders) { group 'canada_standard_post' }
-
-    assert_equal 1, @packager.groups.size,
-                "The number of groups should be 1"
-    assert_equal 'canada_standard_post', @packager.groups.first.filename,
-                "Group filename not getting set"
   end
 
   def test_packaging_multiple_groups

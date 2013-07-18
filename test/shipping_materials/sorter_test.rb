@@ -1,4 +1,4 @@
-require File.expand_path('../header', __FILE__)
+require File.expand_path('../../header', __FILE__)
 
 class SorterTest < TestCase
   def setup

@@ -1,4 +1,4 @@
-require File.expand_path('../header', __FILE__)
+require File.expand_path('../../header', __FILE__)
 require File.expand_path('../../lib/shipping_materials.rb', __FILE__)
 
 class ConfigTest < TestCase

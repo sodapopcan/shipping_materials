@@ -1,4 +1,4 @@
-require File.expand_path('../header', __FILE__)
+require File.expand_path('../../header', __FILE__)
 
 class LabelTest < TestCase
   def test_row_array
