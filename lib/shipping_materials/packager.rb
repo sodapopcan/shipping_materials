@@ -1,29 +1,27 @@
 module ShippingMaterials
   class Packager
-    attr_accessor :groups, :template
+		include Sortable
+
+    attr_accessor :objects, :groups, :template
+
+		def initialize
+      @groups = []
+		end
 
     def package(objects, &block)
       @objects = objects
-      @groups = []
       instance_eval(&block)
+			@groups.each do |group|
+				group.sorters ||= self.sorters
+				group.sort!
+				AssetUtils.write_pdf(group.packing_slips)
+				AssetUtils.write_asset(group.labels)
+			end
     end
 
-    def format(options={})
-      if options.size > 0
-        @format, @template = options.first
-      else
-        @format
-      end
-    end
-
-    # def sort(objects=:objects, &block)
-
-    #   @sorter ||= Sorter.new
-    #   @sorter.rules << &block
-    # end
-
-
-    protected
+    def packing_slips(file_type=nil, template=nil)
+			@packing_slips ||= PackingSlips.new(file_type, template)
+		end
 
     def group(filename, &block)
       group = Group.new(filename, @objects)
