@@ -12,10 +12,6 @@ module ShippingMaterials
       t.render
     end
 
-    def to_pdf
-      write(:pdf, to_s)
-    end
-
     alias_method :to_html, :to_s
   end
 end
