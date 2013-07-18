@@ -1,3 +1,7 @@
+ShippingMaterials.config do |config|
+  config.save_path = MyProject::Config[:asset_storage_location]
+end
+
 packager = ShippingMaterials::Packager.new
 
 orders = Orders.where(state: 'placed')
@@ -11,7 +15,7 @@ packager.package orders do
     rule { type == 'CD' }
     rule { type == 'Cassette' }
 
-    after_each_by_attr_desc(:quantity)
+    after_each(:quantity)
   }
 
   sort {
@@ -21,16 +25,12 @@ packager.package orders do
   group 'canada_standard_shipping' do
     filter { country == 'CA' && shipping_method == 'std' }
 
-    csv(extenstion: 'txt', headers: true) {
+    csv(extenstion: 'txt', headers: true) do
       row code:     'Q',
           order_id: :id,
           hello:    :hello
 
       row line_items: [ 'H', :id, :name, :price, :quantity ]
-    }
-
-    sort {
-
-    }
+    end
   end
 end
