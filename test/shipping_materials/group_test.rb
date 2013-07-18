@@ -41,4 +41,19 @@ class GroupTest < TestCase
                 @group.objects.map {|o| o.name },
                 "Sortable Mixin not working"
   end
+
+  def test_line_item_sort_mixin
+    @group.filter { name == 'Derek' }
+
+    @group.sort(:line_items) {
+      rule { type == 'Vinyl' }
+      rule { type == 'CD'    }
+    }
+
+    @group.sort!
+
+    assert_equal [ 4, 12, 9, 10, 11, 15, 13, 14 ], 
+                @group.objects.first.line_items.map {|li| li.id },
+                "Line items are not sorting"
+  end
 end
