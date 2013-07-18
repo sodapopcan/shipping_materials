@@ -2,7 +2,7 @@ module ShippingMaterials
   class Group
     include Sortable
 
-    attr_accessor :objects, :basename, :sorter
+    attr_accessor :objects, :basename
 
     def initialize(basename, objects)
       @basename  = basename
