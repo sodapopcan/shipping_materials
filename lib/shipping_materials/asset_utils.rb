@@ -1,5 +1,5 @@
 module ShippingMaterials
-  class AssetUltils
+  class AssetUtils
 		def write_asset(asset)
 			filename = "#{Config.save_path}/#{asset.filename}"
 			File.open(filename, 'w') {|f| f.write(asset.to_s) } 
