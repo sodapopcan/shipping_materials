@@ -16,7 +16,7 @@ module ShippingMaterials
           @objects = sorter.sort(@objects)
         else
           @objects = @objects.each do |object|
-            object[:context] = sorter.sort(object.send(context))
+            object.send(:"#{context}=", sorter.sort(object.send(context)))
           end
         end
       end
