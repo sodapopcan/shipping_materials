@@ -9,6 +9,8 @@ module ShippingMaterials
       @rules << block
     end
 
+    # This is suiting my purpose for now
+    # The plan is to implement chainable callbacks
     def each_by(attr)
       @attr_callbacks << attr
     end
