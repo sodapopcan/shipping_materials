@@ -19,7 +19,7 @@ module ShippingMaterials
         @row_maps[:object] = collection
       elsif collection.is_a? Hash
         f = collection.first
-        if ary[1].is_a? Array
+        if f[1].is_a? Array
           @row_maps[f[0]] = f[1]
         elsif f[1].is_a? Hash
           self.headers = collection.first[1]
