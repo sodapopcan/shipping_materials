@@ -1,9 +1,11 @@
 module ShippingMaterials
   class Group
-    attr_accessor :objects, :filename
+    include Sortable
 
-    def initialize(filename, objects)
-      @filename  = filename
+    attr_accessor :objects, :basename, :sorter
+
+    def initialize(basename, objects)
+      @basename  = basename
       @objects   = objects
       @labels    = []
       @extension = 'csv'
@@ -15,10 +17,9 @@ module ShippingMaterials
     end
 
     def labels(options={}, &block)
-      if options.any? || block_given?
-        label = Label.new(@objects, options)
-        label.instance_eval(&block) if block
-
+      if block
+        label = Label.new('filename', @objects, options)
+        label.instance_eval(&block)
         @labels << label
       else
         @labels
