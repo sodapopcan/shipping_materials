@@ -26,4 +26,19 @@ class GroupTest < TestCase
     assert_equal "3,Derek,Hello\n", @group.labels.first.to_csv,
       "The Group#label method is borked"
   end
+
+  def test_sort_mixin
+    @group.filter { country == 'CA' }
+
+    @group.sort {
+      rule { line_items.detect {|li| li.type == 'Vinyl' }}
+      rule { name == 'Miller' }
+    }
+
+    @group.sort!
+
+    assert_equal %w( Andrew J.M. Miller Riley ),
+                @group.objects.map {|o| o.name },
+                "Sortable Mixin not working"
+  end
 end
