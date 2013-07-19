@@ -51,7 +51,13 @@ class PackagerTest < TestCase
   end
 
   def test_should_accept_multiple_row_maps_in_different_contexts
+    ShippingMaterial.config do |config|
+      config.save_path 'test/files/'
+    end
+
     @packager.package orders do
+      packing_slips pdf: './test/files/template.mustache'
+
       group 'canada_standard_post' do
         filter { shipping_method == 'std' && country == 'CA' }
         labels :extension => 'csv', :headers => true do
