@@ -12,10 +12,9 @@ module ShippingMaterials
       @objects = objects
       instance_eval(&block)
 			@groups.each do |group|
-				group.sorters ||= self.sorters
-				group.sort!
-				AssetUtils.write_pdf(group.packing_slips)
-				AssetUtils.write_asset(group.labels)
+        sort_group(group)
+				FileUtils.write_pdf(group.packing_slips)
+				FileUtils.write_asset(group.labels)
 			end
     end
 
