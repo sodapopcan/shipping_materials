@@ -1,29 +1,24 @@
-# ShippingMaterials
+# Shipping Materials
 
-TODO: Write a gem description
+Shipping Materials provides a simple DSL for grouping and sorting a collection
+of orders and their items and creating print materials for them.  So far this
+includes packing slips and CSVs for label makers.
+
+# Warning
+
+I released this gem on Friday, July 19, 2013.  All tests are passing, though I
+am still making some changes.
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'shipping_materials'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install shipping_materials
 
 ## Usage
 
-TODO: Write usage instructions here
+See the examples folder for now.
 
 ## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+For the love of God, please follow [these
+guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
+when writing your commit messages.
