@@ -6,7 +6,7 @@ module ShippingMaterials
     def sort(context=:objects, &block)
       @sorters ||= {}
       @sorters[context] = Sorter.new
-      @sorters[context].instance_eval(&block)
+      @sorters[context].rule(&block)
     end
 
     # Perform the sort

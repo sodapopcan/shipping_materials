@@ -47,8 +47,10 @@ module ShippingMaterials
       end
     end
 
+    alias_method :to_s, :to_csv
+
     def extension
-      @options[:extension]
+      @options[:extension] || 'csv'
     end
 
 		def headers

@@ -19,8 +19,7 @@ module ShippingMaterials
     end
 
     def packing_slips(options={})
-      file_type, template = options.first
-			@packing_slips ||= PackingSlips.new(objects, template)
+      @file_type, @template_location = options.first
 		end
 
     def group(basename, &block)
@@ -38,14 +37,14 @@ module ShippingMaterials
     end
 
     def create_packing_slips(group)
-      group.packing_slips.each do |packing_slip|
-        FileUtils.write_pdf(group.basename, packing_slip.to_s)
-      end 
+      packing_slip = PackingSlips.new(group.objects, @template_location)
+      FileUtils.write_pdf(group.basename, packing_slip.to_s)
     end
 
     def create_labels(group)
       group.labels.each do |label|
-        FileUtils.write_asset(group.basename, label.to_s)
+        extension = group.basename + '.' + label.extension
+        FileUtils.write_file(extension, label.to_s)
       end
     end
   end

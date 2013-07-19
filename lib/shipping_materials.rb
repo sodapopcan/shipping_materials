@@ -1,3 +1,5 @@
+require 'mustache'
+
 require 'shipping_materials/version'
 require 'shipping_materials/mixins/sortable'
 
