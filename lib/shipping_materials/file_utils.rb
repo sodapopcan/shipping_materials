@@ -7,10 +7,11 @@ module ShippingMaterials
       end
 
       def write_pdf(filename, contents)
-        base = "#{Config.save_path}/#{filename}"
+        basename = File.basename(filename, '.*')
+        base = "#{Config.save_path}/#{basename}"
         html_file, pdf_file = base + '.html', base + '.pdf'
-        File.open(html, 'w') {|f| f.write(contents) }
-        %x( wkhtmltopdf #{html} #{pdf} )
+        File.open(html_file, 'w') {|f| f.write(contents) }
+        %x( wkhtmltopdf #{html_file} #{pdf_file} )
         File.unlink(html_file)
       end
     end
