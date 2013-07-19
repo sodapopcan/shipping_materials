@@ -1,5 +1,4 @@
 require 'test/unit'
-require 'debugger'
 
 require File.expand_path('../data.rb', __FILE__)
 
