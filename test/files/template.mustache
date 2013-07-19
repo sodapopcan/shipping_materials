@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <style>
+    </style>
+  </head>
+  <body>
+    {{# objects }}
+    <div>
+      {{ name }}, {{ country }}
+      {{# line_items }}
+        {{ name }}
+      {{/ line_items }}
+    </div>
+    {{/ objects }}
+  </body>
+</html>
