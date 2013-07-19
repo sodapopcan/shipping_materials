@@ -1,15 +1,15 @@
 module ShippingMaterials
   class FileUtils
     class << self
-      def write_asset(asset)
-        filename = "#{Config.save_path}/#{asset.filename}"
-        File.open(filename, 'w') {|f| f.write(asset.to_s) } 
+      def write_file(filename, contents)
+        filename = "#{Config.save_path}/#{filename}"
+        File.open(filename, 'w') {|f| f.write(contents) } 
       end
 
-      def write_pdf(asset)
-        base = "#{Config.save_path}/#{asset.basename}"
+      def write_pdf(filename, contents)
+        base = "#{Config.save_path}/#{filename}"
         html_file, pdf_file = base + '.html', base + '.pdf'
-        File.open(html, 'w') {|f| f.write(asset.to_s) }
+        File.open(html, 'w') {|f| f.write(contents) }
         %x( wkhtmltopdf #{html} #{pdf} )
         File.unlink(html_file)
       end
