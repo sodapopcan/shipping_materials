@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module ShippingMaterials
-  class FileUtilsTest < TestCase
+  class StorageTest < TestCase
     def setup
       @filename = 'hello_world'
       @content  = 'Hello Mr. World'
@@ -10,7 +10,7 @@ module ShippingMaterials
     def test_write_file
       filename = @filename + '.txt'
 
-      ShippingMaterials::FileUtils.write_file(filename, @content)
+      ShippingMaterials::Storage.write_file(filename, @content)
 
       full_path = "#{ShippingMaterials::Config.save_path}/#{filename}"
       assert File.exists?(full_path), "File did not get saved"
@@ -26,7 +26,7 @@ module ShippingMaterials
     def test_write_pdf
       filename = @filename + '.pdf'
 
-      ShippingMaterials::FileUtils.write_pdf(filename, @content)
+      ShippingMaterials::Storage.write_pdf(filename, @content)
 
       full_path = "#{ShippingMaterials::Config.save_path}/#{filename}"
       assert File.exists?(full_path), "PDF did not get saved"

@@ -3,6 +3,10 @@ module ShippingMaterials
     class << self
       attr_writer :save_path
 
+      attr_accessor :s3_bucket,
+                    :s3_access_key,
+                    :s3_secret
+
       def base_context
         @base_context || :objects
       end

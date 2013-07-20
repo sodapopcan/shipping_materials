@@ -1,5 +1,5 @@
 module ShippingMaterials
-  class FileUtils
+  class Storage
     class << self
       def write_file(filename, contents)
         filename = "#{Config.save_path}/#{filename}"
@@ -13,6 +13,14 @@ module ShippingMaterials
         File.open(html_file, 'w') {|f| f.write(contents) }
         %x( wkhtmltopdf #{html_file} #{pdf_file} )
         File.unlink(html_file)
+      end
+
+      def mkdir
+        FileUtils.mkdir(Config.save_path) unless Dir.exists?(Config.save_path)
+      end
+
+      def cleanup
+        FileUtils.rm_rf(Config.save_path)
       end
     end
   end

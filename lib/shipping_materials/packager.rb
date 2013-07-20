@@ -38,13 +38,13 @@ module ShippingMaterials
 
     def create_packing_slips(group)
       packing_slip = PackingSlips.new(group.objects, @template_location)
-      FileUtils.write_pdf(group.basename, packing_slip.to_s)
+      Storage.write_pdf(group.basename, packing_slip.to_s)
     end
 
     def create_labels(group)
       group.labels.each do |label|
         extension = group.basename + '.' + label.extension
-        FileUtils.write_file(extension, label.to_s)
+        Storage.write_file(extension, label.to_s)
       end
     end
   end
