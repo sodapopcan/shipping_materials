@@ -10,6 +10,7 @@ require 'shipping_materials/group'
 require 'shipping_materials/label'
 require 'shipping_materials/packing_slips'
 require 'shipping_materials/sorter'
+require 'shipping_materials/s3'
 
 module ShippingMaterials
   def self.config

@@ -16,6 +16,7 @@ module ShippingMaterials
         create_packing_slips(group)
         create_labels(group)
 			end
+      Storage.gzip if Config.use_gzip?
     end
 
     def packing_slips(options={})
