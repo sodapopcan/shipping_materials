@@ -9,6 +9,15 @@ module TestModels
   end
 
   class LineItem
-    attr_accessor :id, :name, :quantity, :price, :type
+    attr_accessor :id, :name, :quantity, :price, :type, :variant
   end
+
+  class Variant
+    attr_accessor :name
+
+    def initialize(hash)
+      hash.each {|k,v| send("#{k}=", v) }
+    end
+  end
+
 end

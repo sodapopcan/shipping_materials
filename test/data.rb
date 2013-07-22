@@ -24,6 +24,7 @@ module TestData
     li.type     = 'Vinyl'
     li.quantity = 3
     li.price    = 15.95
+    li.variant  = TestModels::Variant.new(name: 'plague soundscapes')
     o.line_items << li
 
     li = TestModels::LineItem.new
@@ -32,6 +33,7 @@ module TestData
     li.type     = 'Vinyl'
     li.quantity = 1
     li.price    = 37.24
+    li.variant  = TestModels::Variant.new(name: 'surfer rosa')
     o.line_items << li
 
     orders << o

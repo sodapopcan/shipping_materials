@@ -71,6 +71,8 @@ module ShippingMaterials
       methods.map do |meth|
         if meth.is_a? Symbol
           object.send(meth)
+        elsif meth.is_a? Array
+          meth.reduce(object) {|obj, m| obj.send(m) }
         elsif meth.is_a? String
           meth
         end

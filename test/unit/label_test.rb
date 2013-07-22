@@ -27,7 +27,7 @@ module ShippingMaterials
     end
 
     def test_row_hash_with_array
-      @label = ShippingMaterials::Label.new(orders)
+      @label = Label.new(orders)
       hash = { :line_items => [:hello, :goodbye, 'Hello there'] }
 
       @label.row(hash)
@@ -38,7 +38,7 @@ module ShippingMaterials
     end
 
     def test_row_hash_with_hash
-      @label = ShippingMaterials::Label.new(orders, headers: true)
+      @label = Label.new(orders, headers: true)
       hash = {
         :line_items => {
           :order_id => :id,
@@ -57,7 +57,7 @@ module ShippingMaterials
     end
 
     def test_row_multi_call
-      @label = ShippingMaterials::Label.new(orders, headers: true)
+      @label = Label.new(orders, headers: true)
       hash1 = {
         :order_id => :id,
         :name     => :name,
@@ -79,9 +79,26 @@ module ShippingMaterials
                   "Headers should not be overwritten by secondary call to row"
     end
 
+    def test_array_chain
+      @label = Label.new(orders.select {|o| o.name == 'Andrew' })
+      hash = {
+        :line_items => {
+          :order_id => :id,
+          :name => :name,
+          :variant_name => [ :variant, :name ]
+        }
+      }
+
+      @label.row(hash)
+
+      assert_equal "1,Plague Soundscapes,plague soundscapes\n" \
+                  "2,Surfer Rosa,surfer rosa\n",
+                  @label.to_csv,
+                  "CSV method chaining is borked"
+    end
+
     def test_to_csv
-      @label = ShippingMaterials::Label.new orders.select {|o| o.id == 1 },
-                                            headers: true
+      @label = Label.new(orders.select {|o| o.id == 1 }, headers: true)
       @label.row :order_id => :id,
                 :name     => :name,
                 :static_fields => 'A string'
