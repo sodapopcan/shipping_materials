@@ -19,8 +19,8 @@ module ShippingMaterials
       Storage.gzip if Config.use_gzip?
     end
 
-    def packing_slips(options={})
-      @file_type, @template_location = options.first
+    def pdf(template)
+      @packing_slip_template = template
 		end
 
     def group(basename, &block)
@@ -38,7 +38,7 @@ module ShippingMaterials
     end
 
     def create_packing_slips(group)
-      packing_slip = PackingSlips.new(group.objects, @template_location)
+      packing_slip = PackingSlips.new(group.objects, @packing_slip_template)
       Storage.write_pdf(group.basename, packing_slip.to_s)
     end
 
