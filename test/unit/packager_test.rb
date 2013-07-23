@@ -2,12 +2,12 @@ require 'test_helper'
 
 module ShippingMaterials
 	self.config do |config|
-		config.save_path     = '/Users/andrwe/shipping_materials'
-		config.gzip_file_name = proc { "shipmat#{Time.now.to_i}" }
-		config.use_s3        = true
-		config.s3_bucket     = 'shipmaterials.gelaskins.com'
-		config.s3_access_key = ENV['AWS_SECRET_ACCESS_KEY']
-		config.s3_secret     = ENV['AWS_ACCESS_KEY']
+		config.save_path      = '/Users/andrwe/shipping_materials'
+		config.gzip_file_name = "shipmat#{Time.now.to_i}.tar.gz"
+		config.use_s3         = true
+		config.s3_bucket      = 'shipmaterials.gelaskins.com'
+		config.s3_access_key  = ENV['AWS_SECRET_ACCESS_KEY']
+		config.s3_secret      = ENV['AWS_ACCESS_KEY']
 	end
 
   class PackagerTest < TestCase
