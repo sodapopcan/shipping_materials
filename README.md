@@ -7,8 +7,7 @@ includes packing slips and CSVs for label makers.
 
 ## Warning
 
-I released this gem on Friday, July 19, 2013.  All tests are passing, though I
-am still making some changes.
+I would not designate this gem "production ready".  I will be using it in production at my place of work very soon; I just wanted to get it out there.
 
 ## Installation
 
@@ -32,17 +31,17 @@ There is a little bit of configuration you are going to want to do first and tha
     end
 ```
 
-OR
+If you would like to use S3, add the following:
 
 ```ruby
     ShippingMaterials.config do |config|
         config.s3_bucket = 'bucket.domain.com'
         config.s3_access_key_id = ENV['AWS_ACCESS_KEY']
-        config.s3_secret_access_key = env['AWS_SECRET_ACCESS_KEY']
+        config.s3_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
     end
 ```
 
-Note: The access key lines are not needed if you are using the proper environment variables, you just need to specify the bucket.
+Note: The access key lines are most likely not needed if you are using the proper environment variables, you just need to specify a bucket.
 
 ### The Packager
 
@@ -52,7 +51,7 @@ The DSL is provided via the ShippingMaterials::Packager class.
     packager = ShippingMaterials::Packager.new
 ```
 
-The Packager's package method takes a collection of objects of the same type.
+The Packager's `#package` method takes a collection of objects of the same type.
 
 ```ruby
     orders = Order.where(state: 'placed')
@@ -62,7 +61,7 @@ The Packager's package method takes a collection of objects of the same type.
     end
 ```
 
-Because we are creating shipping materials here, at the very least, it is assumed you are going to want packing slips.  You may specify a global template with the pdf method:
+Because we are creating shipping materials here, at the very least, it is assumed you are going to want packing slips.  You may specify a global template with the `#pdf` method:
 
 ```ruby
     packager.package orders do
@@ -190,18 +189,6 @@ For more, see the docs... only there are no docs yet, hence the long README.
 This is my first foray into the world of library authoring.  I welcome any and all advice and pull requests with open arms, but for the love of whoever or whatever you believe in: please follow [these
 guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 when writing your commit messages.
-# Warning
-
-I released this gem on Friday, July 19, 2013.  All tests are passing, though I
-am still making some changes.
-
-## Installation
-
-    $ gem install shipping_materials
-
-## Usage
-
-See the examples folder for now.
 
 ## Contributing
 
