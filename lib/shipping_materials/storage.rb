@@ -14,7 +14,7 @@ module ShippingMaterials
       end
 
       def write_pdf(filename, contents)
-        basename = File.basename(filename, '.*')
+        basename = filenameize(File.basename(filename, '.*'))
         base = "#{save_path}/#{basename}"
         html_file, pdf_file = base + '.html', base + '.pdf'
         File.open(html_file, 'w') {|f| f.write(contents) }
@@ -46,6 +46,10 @@ module ShippingMaterials
       def save_path
         FileUtils.mkdir(Config.save_path) unless Dir.exists?(Config.save_path)
         Config.save_path
+      end
+
+      def filenameize(string)
+        string.gsub(/[^A-Z0-9_]+/i, '')
       end
     end
   end
