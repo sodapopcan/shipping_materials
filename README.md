@@ -1,5 +1,4 @@
 # Shipping Materials
-hipping Materials
 
 Shipping Materials provides a simple DSL for grouping and sorting a collection
 of orders and their items and creating print materials for them.  So far this
