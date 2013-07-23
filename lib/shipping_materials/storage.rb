@@ -32,8 +32,8 @@ module ShippingMaterials
       def gzip
         filename = "#{Config.save_path}/#{Config.gzip_file_name}"
         `cd #{Config.save_path} && \
-       tar -cvzf #{filename} * && \
-       cd -`
+         tar -cvzf #{filename} * && \
+         cd -`
         if Config.use_s3?
           @s3 ||= S3.new
           File.open(filename) do |fp|
