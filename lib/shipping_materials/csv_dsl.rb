@@ -1,5 +1,5 @@
 module ShippingMaterials
-  class Label
+  class CSVDSL
     require 'csv'
 
     attr_accessor :objects, :row_maps

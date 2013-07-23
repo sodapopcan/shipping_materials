@@ -26,7 +26,7 @@ module ShippingMaterials
         group 'canada_standard_post' do
           filter { shipping_method == 'std' && country == 'CA' }
 
-          labels :headers => true do
+          csv :headers => true do
             row :order_id => :id,
                 :name     => :name,
                 :static_fields => 'Use a string'
@@ -38,7 +38,7 @@ module ShippingMaterials
         group 'international_ups_expedited' do
           filter { shipping_method == 'UPSexp' && !%w(US CA).include?(country) }
 
-          labels :entension => 'txt' do
+          csv :entension => 'txt' do
             row [ :id, :name ]
           end
         end
@@ -46,7 +46,7 @@ module ShippingMaterials
         group 'all_canadian_orders' do
           filter { country == 'CA' }
 
-          labels do
+          csv do
             row [ :id, :name ]
           end
         end
@@ -54,7 +54,7 @@ module ShippingMaterials
         group 'all_us_orders' do
           filter { country == 'US' }
 
-          labels do
+          csv do
             row [ :id, :name ]
           end
         end

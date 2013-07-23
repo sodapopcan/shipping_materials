@@ -14,7 +14,7 @@ module ShippingMaterials
 			@groups.each do |group|
         sort_group(group)
         create_packing_slips(group)
-        create_labels(group)
+        csvs(group)
 			end
       Storage.gzip if Config.use_gzip?
     end
@@ -42,10 +42,10 @@ module ShippingMaterials
       Storage.write_pdf(group.basename, packing_slip.to_s)
     end
 
-    def create_labels(group)
-      group.labels.each do |label|
-        extension = group.basename + '.' + label.extension
-        Storage.write_file(extension, label.to_s)
+    def csvs(group)
+      group.csvs.each do |csv|
+        extension = group.basename + '.' + csv.extension
+        Storage.write_file(extension, csv.to_s)
       end
     end
   end

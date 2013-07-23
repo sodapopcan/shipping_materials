@@ -13,19 +13,19 @@ module ShippingMaterials
         "The number of groups should be 4"
     end
 
-    def test_labels
+    def test_csv
       @group.filter { name == 'Derek' }
       assert_equal 1, @group.objects.size,
         "The number of Groups should be 1"
 
-      @group.labels {
+      @group.csv {
         row :order_id => :id,
             :name     => :name,
             :static   => 'Hello'
       }
 
-      assert_equal "3,Derek,Hello\n", @group.labels.first.to_csv,
-        "The Group#label method is borked"
+      assert_equal "3,Derek,Hello\n", @group.csvs.first.to_csv,
+        "The Group#csv method is borked"
     end
 
     def test_sort_mixin

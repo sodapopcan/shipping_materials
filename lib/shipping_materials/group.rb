@@ -2,12 +2,12 @@ module ShippingMaterials
   class Group
     include Sortable
 
-    attr_accessor :objects, :basename
+    attr_accessor :objects, :basename, :csvs
 
     def initialize(basename, objects)
       @basename  = basename
       @objects   = objects
-      @labels    = []
+      @csvs      = []
       @extension = 'csv'
       @headers   = false
     end
@@ -16,13 +16,11 @@ module ShippingMaterials
       @objects = @objects.select {|o| o.instance_eval(&block) }
     end
 
-    def labels(options={}, &block)
+    def csv(options={}, &block)
       if block
-        label = Label.new(@objects, options)
-        label.instance_eval(&block)
-        @labels << label
-      else
-        @labels
+        csv = CSVDSL.new(@objects, options)
+        csv.instance_eval(&block)
+        @csvs << csv
       end
     end
   end
