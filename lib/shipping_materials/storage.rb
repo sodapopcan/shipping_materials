@@ -39,7 +39,7 @@ module ShippingMaterials
           File.open(filename) do |fp|
             @s3.write(Config.gzip_file_name, fp)
           end
-          FileUtils.rm_rf(self.save_path)
+          FileUtils.rm_rf(self.save_path) unless self.save_path == '/'
         end
       end
 
