@@ -176,8 +176,7 @@ Materials provides a sorting DSL for more complex sorts.  For example:
       sort do
         # put orders containing only Vinyl at the top
         rule {
-          return false if line_items.detect {|li| type != 'Vinyl' }
-          return true  if line_items.detect {|li| type == 'Vinyl' }
+          return true unless line_items.detect {|li| type != 'Vinyl' }
         }
         
         # next come orders that have both Vinyl and CDs (and possibly # other)
