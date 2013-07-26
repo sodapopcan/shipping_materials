@@ -212,7 +212,7 @@ specifically):
 
 This will sort your line items within each packing slip.
 
-### Documentation
+## Documentation
 
 For more, see the docs... only there are no docs yet, hence the long README.
 
