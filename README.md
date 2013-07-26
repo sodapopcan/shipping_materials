@@ -28,23 +28,20 @@ There is a little bit of configuration you are going to want to do first and
 that is to add a save_path.
 
 ```ruby
-    ShippingMaterials.config do |config|
-      config.save_path = 'local/save/path'
-    end
+  ShippingMaterials.config do |config|
+    config.save_path = 'local/save/path'
+  end
 ```
 
 If you would like to use S3, add the following:
 
 ```ruby
-    ShippingMaterials.config do |config|
-      config.s3_bucket = 'bucket.domain.com'
-      config.s3_access_key_id = ENV['AWS_ACCESS_KEY']
-      config.s3_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
-    end
+  ShippingMaterials.config do |config|
+    config.s3_bucket = 'bucket.domain.com'
+    config.s3_access_key_id = ENV['AWS_ACCESS_KEY']
+    config.s3_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+  end
 ```
-
-Note: The access key lines are most likely not needed if you are using the
-proper environment variables, you just need to specify a bucket.
 
 ### The Packager
 
@@ -58,11 +55,11 @@ The Packager's `#package` method takes a collection of objects of the same
 type.
 
 ```ruby
-    orders = Order.where(state: 'placed')
+  orders = Order.where(state: 'placed')
 
-    packager.package :orders do
-      # ...
-    end
+  packager.package :orders do
+    # ...
+  end
 ```
 
 Because we are creating shipping materials here, at the very least, it is
@@ -70,57 +67,58 @@ assumed you are going to want packing slips.  You may specify a global template
 with the `#pdf` method:
 
 ```ruby
-    packager.package orders do
-      pdf 'path/to/template.mustache'
-    end
+  packager.package orders do
+    pdf 'path/to/template.mustache'
+  end
 ```
 
 Now, at the simplest level, we can start breaking these objects down into
 groups.
 
 ```ruby
-    packager.package orders do
-      pdf 'path/to/template.mustache'
+  packager.package orders do
+    pdf 'path/to/template.mustache'
 
-      group 'Canadian Standard Post' do
-        filter {
-          ship_method == 'std' && country == 'CA'
-        }
-      end
-      
-      group 'United States UPS Expedited' do
-        filter {
-          ship_method == 'UPSexp' && country == 'US'
-        }
-      end
-      
-      group 'International World Ship' do
-        filter {
-          ship_method == 'UPS' && !%w[ US CA ].include?(country)
-        }
-      end
+    group 'Canadian Standard Post' do
+      filter {
+        ship_method == 'std' && country == 'CA'
+      }
     end
+    
+    group 'United States UPS Expedited' do
+      filter {
+        ship_method == 'UPSexp' && country == 'US'
+      }
+    end
+    
+    group 'International World Ship' do
+      filter {
+        ship_method == 'UPS' && !%w[ US CA ].include?(country)
+      }
+    end
+  end
 ```
 
 PDFs (one per group) will now be created.  With groups named as above, you can
 expect the file names 'CanadianStandardPost.pdf', 'UnitedStatesUPSExpedite.pdf'
 and 'InternationalWorldShip.pdf'.
 
-### Templating Right now, templating is done with Mustache.  I plan on adding
-more in the future (or feel to send me a pull request).  Here is an example
-template:
+### Templating
+
+Right now, templating is done with Mustache.  I plan on adding more in the
+future (or feel free to send me a pull request).  Here is an example template:
 
 ```html
-    <html>
-      {{# orders }}
-        <div>
-          <p>{{ number }}</p>
-          {{# line_items }}
-            <p>{{ name }}: ${{ price }} x {{ quantity }} = {{ total }}</p>
-          {{/ line_items }}
-        </div>
-      {{/ orders }}
-    </html>
+  <html>
+    {{# orders }}
+      <div>
+        <p>{{ number }}</p>
+        {{# line_items }}
+          <p>{{ name }}: ${{ price }} x {{ quantity }} = {{ total }}</p>
+        {{/ line_items }}
+      </div>
+    {{/ orders }}
+  </html>
 ```
 
 
@@ -141,16 +139,16 @@ a hash or an array and may be called multiple times.
 Here is an example with hashes:
 
 ```ruby
-    group 'Canadian Standard Post' do
-      csv(headers: true) {
-        row 'Code' => 'Q',
-            'Order Number' => :number,
-            'Name'     => [ :shipping_address, :name ]
-              # ...
-            'Country'  => [ :shipping_address, :country, :iso ]
-            
-        row line_items: [ 'H', :id, :name, :quantity, :price ] }
-      end
+  group 'Canadian Standard Post' do
+    csv(headers: true) {
+      row 'Code' => 'Q',
+          'Order Number' => :number,
+          'Name'     => [ :shipping_address, :name ]
+            # ...
+          'Country'  => [ :shipping_address, :country, :iso ]
+          
+      row line_items: [ 'H', :id, :name, :quantity, :price ] }
+    end
 ```
 
 In this example, the first call to row is evaluated in the context of each
@@ -205,12 +203,12 @@ to the sort method (ie: your association doesn't have to be called "line_items"
 specifically):
 
 ```ruby
-    sort(:line_items) do
-      rule { type == 'Vinyl' }
-      rule { type == 'CD' }
-      rule { type == 'Cassette' }
-      rule { type == '8-Track' }
-    end
+  sort(:line_items) do
+    rule { type == 'Vinyl' }
+    rule { type == 'CD' }
+    rule { type == 'Cassette' }
+    rule { type == '8-Track' }
+  end
 ```
 
 This will sort your line items within each packing slip.
