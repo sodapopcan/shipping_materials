@@ -170,27 +170,27 @@ While most sorting should probably be done at the query level, Shipping
 Materials provides a sorting DSL for more complex sorts.  For example:
 
 ```ruby
-    packager.package orders do
-      pdf 'path/to/template.mustache'
-        
-      sort do
-        # put orders containing only Vinyl at the top
-        rule {
-          return true unless line_items.detect {|li| type != 'Vinyl' }
-        }
-        
-        # next come orders that have both Vinyl and CDs (and possibly # other)
-        rule {
-          line_items.select { |li|
-            %w( Vinyl CD ).include?(li.type)
-          }.uniq.size == 2
-        }
-        
-        # get the picture?
-      end
-        
-      group # ...
+  packager.package orders do
+    pdf 'path/to/template.mustache'
+      
+    sort do
+      # put orders containing only Vinyl at the top
+      rule {
+        return true unless line_items.detect {|li| type != 'Vinyl' }
+      }
+      
+      # next come orders that have both Vinyl and CDs (and possibly # other)
+      rule {
+        line_items.select { |li|
+          %w( Vinyl CD ).include?(li.type)
+        }.uniq.size == 2
+      }
+      
+      # get the picture?
     end
+      
+    group # ...
+  end
 ```
 
 A merge sort will be performed sorting the orders within each group according
