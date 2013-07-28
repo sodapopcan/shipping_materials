@@ -12,10 +12,10 @@ module ShippingMaterials
     # Perform the sort
     def sort!
       @sorters.each do |context, sorter|
-        if context == :objects
-          @objects = sorter.sort(@objects)
+        @objects = if context == :objects
+          sorter.sort(@objects)
         else
-          @objects = @objects.each do |object|
+          @objects.each do |object|
             object.send(:"#{context}=", sorter.sort(object.send(context)))
           end
         end

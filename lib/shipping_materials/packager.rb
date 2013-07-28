@@ -1,27 +1,27 @@
 module ShippingMaterials
   class Packager
-		include Sortable
+    include Sortable
 
     attr_accessor :objects, :groups, :template
 
-		def initialize
+    def initialize
       @groups = []
-		end
+    end
 
     def package(objects, &block)
       @objects = objects
       instance_eval(&block)
-			@groups.each do |group|
+      @groups.each do |group|
         sort_group(group)
         create_packing_slips(group)
         csvs(group)
-			end
+      end
       Storage.gzip if Config.use_gzip?
     end
 
     def pdf(template)
       @packing_slip_template = template
-		end
+    end
 
     def group(basename, &block)
       group = Group.new(basename, @objects)

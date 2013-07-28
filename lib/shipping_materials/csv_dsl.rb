@@ -11,8 +11,8 @@ module ShippingMaterials
     end
 
     # This method is on the complex side. It is a DSL method that
-		# performs type-checking and also sets the headers.
-		# Be sure to see headers=() defined below
+    # performs type-checking and also sets the headers.
+    # Be sure to see headers=() defined below
     def row(collection)
       if collection.is_a? Array
         @row_maps[:object] = collection
@@ -53,13 +53,13 @@ module ShippingMaterials
       @options[:extension] || 'csv'
     end
 
-		def headers
-			@headers
-		end
+    def headers
+      @headers
+    end
 
-		def headers=(object)
-			@headers ||= object.keys.map {|h| h.to_s } if self.headers?
-		end
+    def headers=(object)
+      @headers ||= object.keys.map {|h| h.to_s } if self.headers?
+    end
 
     def headers?
       @options[:headers]
