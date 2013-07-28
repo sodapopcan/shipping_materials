@@ -1,8 +1,6 @@
 module ShippingMaterials
   class Config
     class << self
-      attr_writer :save_path
-
       attr_accessor :s3_bucket,
                     :s3_access_key,
                     :s3_secret,
@@ -17,7 +15,7 @@ module ShippingMaterials
         @base_context = bc.to_sym
       end
 
-      def save_path(save_path)
+      def save_path=(save_path)
         @save_path = save_path.sub(/(\/)+$/, '')
       end
 
