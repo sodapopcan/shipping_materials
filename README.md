@@ -52,7 +52,7 @@ type.
 ```ruby
   orders = Order.where(state: 'placed')
 
-  packager.package :orders do
+  packager.package orders do
     # ...
   end
 ```
