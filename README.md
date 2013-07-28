@@ -4,11 +4,6 @@ Shipping Materials provides a simple DSL for grouping and sorting a collection
 of orders and their items and creating print materials for them.  So far this
 includes packing slips and CSVs for label makers.
 
-## Warning
-
-I would not designate this gem "production ready".  I will be using it in
-production at my place of work very soon; I just wanted to get it out there.
-
 ## Installation
 
     $ gem install shipping_materials
@@ -37,8 +32,8 @@ If you would like to use S3, add the following:
 
 ```ruby
   ShippingMaterials.config do |config|
-    config.s3_bucket = 'bucket.domain.com'
-    config.s3_access_key_id = ENV['AWS_ACCESS_KEY']
+    config.s3_bucket            = 'bucket.domain.com'
+    config.s3_access_key_id     = ENV['AWS_ACCESS_KEY']
     config.s3_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
   end
 ```
@@ -110,28 +105,34 @@ future (or feel free to send me a pull request).  Here is an example template:
 
 ```html
   <html>
-    {{# orders }}
+    {{# objects }}
       <div>
         <p>{{ number }}</p>
         {{# line_items }}
           <p>{{ name }}: ${{ price }} x {{ quantity }} = {{ total }}</p>
         {{/ line_items }}
       </div>
-    {{/ orders }}
+    {{/ objects }}
   </html>
 ```
 
 
-The `orders` variable is inferred from the the class name of your objects.
+I chose the 'objects' as the default variable name, though you may change this
+in config:
 
-Each group will yield one PDF file for print-out.
+```ruby
+  ShippingMaterials.config do |config|
+    config.base_context = 'orders'
+  end
+```
+
+Each group will produce one PDF.
 
 ### CSV (for shipping labels)
 
-Any label printer I know -- as well as things like UPS worldship -- use CSVs,
+Any label printer I know -- as well as things like UPS Worldship -- use CSVs,
 so Shipping Materials provides a little CSV templating DSL.  This is provided
-via the `#csv` method and would generally be called inside a group block since
-label requirements tend to differ across shipping methods.
+via the `Group#csv` method.
 
 The `#csv` method takes a block which exposes the `#row` method.  `#row` takes
 a hash or an array and may be called multiple times.
@@ -144,11 +145,12 @@ Here is an example with hashes:
       row 'Code' => 'Q',
           'Order Number' => :number,
           'Name'     => [ :shipping_address, :name ]
-            # ...
+           # ...
           'Country'  => [ :shipping_address, :country, :iso ]
           
-      row line_items: [ 'H', :id, :name, :quantity, :price ] }
-    end
+      row line_items: [ 'H', :id, :name, :quantity, :price ]
+    }
+  end
 ```
 
 In this example, the first call to row is evaluated in the context of each
@@ -179,11 +181,9 @@ Materials provides a sorting DSL for more complex sorts.  For example:
         return true unless line_items.detect {|li| type != 'Vinyl' }
       }
       
-      # next come orders that have both Vinyl and CDs (and possibly # other)
+      # next come orders that have both Vinyl and CDs and nothing else
       rule {
-        line_items.select { |li|
-          %w( Vinyl CD ).include?(li.type)
-        }.uniq.size == 2
+        line_items.select {|li| %w[ Vinyl CD ].include?(li.type) }.uniq.size == 2
       }
       
       # get the picture?
@@ -214,7 +214,9 @@ This will sort your line items within each packing slip.
 
 ## Documentation
 
-For more, see the docs... only there are no docs yet, hence the long README.
+Other than this README, there is no documentation yet.  There are a few other
+experimental and volatile features not mentioned here.  They are certainly
+going to change soon.
 
 ## Contributing
 
@@ -224,8 +226,7 @@ whatever you believe in: please follow [these
 guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 when writing your commit messages.
 
-## Contributing
+## A note about the tests
 
-For the love of God, please follow [these
-guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
-when writing your commit messages.
+I am still learning to test properly.  Tests are passing _but_ some of them are
+writing to the filesystem.  These wrongs will be righted in due time.
