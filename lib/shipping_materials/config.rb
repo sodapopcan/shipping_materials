@@ -4,7 +4,6 @@ module ShippingMaterials
       attr_accessor :s3_bucket,
                     :s3_access_key,
                     :s3_secret,
-                    :use_s3,
                     :gzip_file_name
 
       def base_context
@@ -25,7 +24,7 @@ module ShippingMaterials
       end
 
       def use_s3?
-        @use_s3
+        @s3_bucket
       end
 
       def use_gzip?
