@@ -6,6 +6,7 @@ module ShippingMaterials
 
     def initialize
       @groups = []
+      @sorters = {}
     end
 
     def package(objects, &block)
@@ -32,8 +33,8 @@ module ShippingMaterials
     private
 
     def sort_group(group)
-      return unless self.sorters.nil?
-      group.sorters ||= self.sorters unless group.sorters.nil?
+      return if self.sorters.empty?
+      group.sorters ||= self.sorters
       group.sort!
     end
 
