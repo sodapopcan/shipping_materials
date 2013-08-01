@@ -63,7 +63,7 @@ with the `#pdf` method:
 
 ```ruby
   packager.package orders do
-    pdf 'path/to/template.mustache'
+    pdf 'path/to/template.erb'
   end
 ```
 
@@ -72,7 +72,7 @@ groups.
 
 ```ruby
   packager.package orders do
-    pdf 'path/to/template.mustache'
+    pdf 'path/to/template.erb'
 
     group 'Canadian Standard Post' do
       filter {
@@ -100,30 +100,23 @@ and 'InternationalWorldShip.pdf'.
 
 ### Templating
 
-Right now, templating is done with Mustache.  I plan on adding more in the
-future (or feel free to send me a pull request).  Here is an example template:
+Shipping Materials uses [Tilt](http://www.github.com/rtomayko/tilt) therefore
+there are a number of options available.  Templates are evaluated within the
+context of the order array. A sample ERB template would look like this:
 
-```html
+```erb
   <html>
-    {{# objects }}
-      <div>
-        <p>{{ number }}</p>
-        {{# line_items }}
-          <p>{{ name }}: ${{ price }} x {{ quantity }} = {{ total }}</p>
-        {{/ line_items }}
-      </div>
-    {{/ objects }}
+    <body>
+      <% self.each do |order| %>
+        <p><%= order.number %>
+        <div>
+        <% order.line_items.each do |li| %>
+          <p><%= line_item.desc %>: $<%= li.price %> x <%= li.qty %> = <%= li.total %></p>
+        <% end %>
+        </div>
+      <% end %>
+    </body>
   </html>
-```
-
-
-I chose the 'objects' as the default variable name, though you may change this
-in config:
-
-```ruby
-  ShippingMaterials.config do |config|
-    config.base_context = 'orders'
-  end
 ```
 
 Each group will produce one PDF.
@@ -173,12 +166,12 @@ Materials provides a sorting DSL for more complex sorts.  For example:
 
 ```ruby
   packager.package orders do
-    pdf 'path/to/template.mustache'
+    pdf 'path/to/template.erb'
       
     sort do
       # put orders containing only Vinyl at the top
       rule {
-        return true unless line_items.detect {|li| type != 'Vinyl' }
+        line_items.select {|li| type != 'Vinyl' }.any?
       }
       
       # next come orders that have both Vinyl and CDs and nothing else

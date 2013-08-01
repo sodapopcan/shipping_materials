@@ -1,3 +1,4 @@
+require 'tilt'
 require 'mustache'
 
 require 'shipping_materials/version'
