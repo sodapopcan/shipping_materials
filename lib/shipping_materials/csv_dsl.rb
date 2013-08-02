@@ -73,6 +73,8 @@ module ShippingMaterials
           object.send(meth)
         elsif meth.is_a? Array
           meth.reduce(object) {|obj, m| obj.send(m) }
+        elsif meth.is_a? Proc
+          object.instance_eval(&meth)
         elsif meth.is_a? String
           meth
         end

@@ -97,10 +97,17 @@ module ShippingMaterials
                   "CSV method chaining is borked"
     end
 
+    def test_proc
+      @csv = CSVDSL.new(orders.select {|o| o.name == 'Andrew' })
+      @csv.row [ proc { "#{id}+#{name}" } ]
+
+      assert_equal "1+Andrew\n", @csv.to_csv, "CSV with proc doesn't work"
+    end
+
     def test_to_csv
       @csv = CSVDSL.new(orders.select {|o| o.id == 1 }, headers: true)
-      @csv.row :order_id => :id,
-                :name     => :name,
+      @csv.row :order_id       => :id,
+                :name          => :name,
                 :static_fields => 'A string'
 
       @csv.row :line_items => [:id, :name, :quantity]
