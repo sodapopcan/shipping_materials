@@ -35,14 +35,20 @@ module ShippingMaterials
         if Config.use_s3?
           @s3 ||= S3.new
           File.open(filename) do |fp|
+            puts "Saving gzip file to S3"
             @s3.write(Config.gzip_file_name, fp)
+            puts "Done"
           end
           FileUtils.rm_rf(self.save_path) unless self.save_path == '/'
+          puts "Removed working dir: #{Config.save_path}/"
         end
       end
 
       def save_path
-        FileUtils.mkdir(Config.save_path) unless Dir.exists?(Config.save_path)
+        unless Dir.exists?(Config.save_path)
+          FileUtils.mkdir(Config.save_path) 
+          puts "Created working dir: #{Config.save_path}/"
+        end
         Config.save_path
       end
 
