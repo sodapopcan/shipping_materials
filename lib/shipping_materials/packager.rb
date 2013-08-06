@@ -33,7 +33,6 @@ module ShippingMaterials
     private
 
     def sort_group(group)
-      return if self.sorters.empty?
       group.sorters ||= self.sorters
       group.sort!
     end
