@@ -4,10 +4,13 @@ module ShippingMaterials
 
     attr_accessor :objects, :row_maps
 
+    attr_reader :headers
+
     def initialize(objects, options={})
-      @objects  = objects
-      @row_maps = {}
-      @options  = options
+      @objects           = objects
+      @row_maps          = {}
+      @row_map_callbacks = {}
+      @options           = options
     end
 
     # This method is on the complex side. It is a DSL method that
@@ -51,10 +54,6 @@ module ShippingMaterials
 
     def extension
       @options[:extension] || 'csv'
-    end
-
-    def headers
-      @headers
     end
 
     def headers=(object)
