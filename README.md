@@ -40,7 +40,7 @@ If you would like to use S3, add the following:
 
 ### The Packager
 
-The DSL is provided via the ShippingMaterials::Packager class.
+The DSL is provided via the `ShippingMaterials::Packager` class.
 
 ```ruby
   packager = ShippingMaterials::Packager.new
@@ -111,7 +111,7 @@ context of the order array. A sample ERB template would look like this:
         <p><%= order.number %>
         <div>
         <% order.line_items.each do |li| %>
-          <p><%= line_item.desc %>: $<%= li.price %> x <%= li.qty %> = <%= li.total %></p>
+          <p><%= li.desc %>: $<%= li.price %> x <%= li.qty %> = <%= li.total %></p>
         <% end %>
         </div>
       <% end %>
