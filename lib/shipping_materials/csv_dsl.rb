@@ -24,7 +24,7 @@ module ShippingMaterials
         if f[1].is_a? Array
           @row_maps[f[0]] = f[1]
         elsif f[1].is_a? Hash
-          self.headers = collection.first[1]
+          self.headers = f[1]
           @row_maps[f[0]] = f[1].values
         else
           self.headers = collection
