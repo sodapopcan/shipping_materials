@@ -29,7 +29,7 @@ module ShippingMaterials
         end
       end
 
-      def gzip
+      def write_gzip
         filename = "#{Config.save_path}/#{Config.gzip_file_name}"
         `cd #{Config.save_path} && tar -cvzf #{filename} * && cd -`
         if Config.use_s3?

@@ -17,7 +17,7 @@ module ShippingMaterials
         create_packing_slips(group)
         create_csvs(group)
       end
-      Storage.gzip if Config.use_gzip?
+      Storage.write_gzip if Config.use_gzip?
     end
 
     def pdf(template)
