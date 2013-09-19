@@ -34,21 +34,20 @@ module ShippingMaterials
     end
 
     private
+      def sort_group(group)
+        group.sorters ||= self.sorters
+        group.sort!
+      end
 
-    def sort_group(group)
-      group.sorters ||= self.sorters
-      group.sort!
-    end
+      def create_packing_slips(group)
+        packing_slip = PackingSlips.new(group.objects, @packing_slip_template)
+        Storage.write_pdf(group.basename, packing_slip.to_s)
+      end
 
-    def create_packing_slips(group)
-      packing_slip = PackingSlips.new(group.objects, @packing_slip_template)
-      Storage.write_pdf(group.basename, packing_slip.to_s)
-    end
-
-    def create_csvs(group)
-      group.csvs.each do |csv|
-        filename = Storage.filenameize(group.basename) + '.' + csv.extension
-        Storage.write_file(filename, csv.to_s)
+      def create_csvs(group)
+        group.csvs.each do |csv|
+          filename = Storage.filenameize(group.basename) + '.' + csv.extension
+          Storage.write_file(filename, csv.to_s)
       end
     end
   end

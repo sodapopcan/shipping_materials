@@ -3,7 +3,6 @@ module ShippingMaterials
     require 'csv'
 
     attr_accessor :objects, :row_maps
-
     attr_reader :headers
 
     def initialize(objects, options={})
@@ -49,7 +48,6 @@ module ShippingMaterials
         end
       end
     end
-
     alias_method :to_s, :to_csv
 
     def extension
@@ -65,19 +63,18 @@ module ShippingMaterials
     end
 
     private
-
-    def get_row(object, methods)
-      methods.map do |meth|
-        if meth.is_a? Symbol
-          object.send(meth)
-        elsif meth.is_a? Array
-          meth.reduce(object) {|obj, m| obj.send(m) }
-        elsif meth.is_a? Proc
-          object.instance_eval(&meth)
-        elsif meth.is_a? String
-          meth
+      def get_row(object, methods)
+        methods.map do |meth|
+          if meth.is_a? Symbol
+            object.send(meth)
+          elsif meth.is_a? Array
+            meth.reduce(object) {|o,m| o.send(m) }
+          elsif meth.is_a? Proc
+            object.instance_eval(&meth)
+          elsif meth.is_a? String
+            meth
+          end
         end
       end
-    end
   end
 end
