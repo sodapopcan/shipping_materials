@@ -1,0 +1,14 @@
+<html>
+  <body>
+    <% self.each do |order| %>
+    <div>
+      <h1><%= order.id %></h1>
+      <ul>
+      <% order.line_items.each do |li| %>
+        <li><%= li.name %> - <%= li.quantity %> x $<%= li.price %> = $<%= li.total %></li>
+      <% end %>
+      </ul>
+    </div>
+    <% end %>
+  </body>
+</html>

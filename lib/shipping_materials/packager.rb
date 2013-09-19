@@ -23,8 +23,14 @@ module ShippingMaterials
       self
     end
 
+    def html(template)
+      @packing_slip_template = template
+      @packing_slip_ext = :html
+    end
+
     def pdf(template)
       @packing_slip_template = template
+      @packing_slip_ext = :pdf
     end
 
     def group(basename, &block)
@@ -41,7 +47,8 @@ module ShippingMaterials
 
       def create_packing_slips(group)
         packing_slip = PackingSlips.new(group.objects, @packing_slip_template)
-        Storage.write_pdf(group.basename, packing_slip.to_s)
+        filename = "#{group.basename}.#{@packing_slip_ext}"
+        Storage.send(:"write_#{@packing_slip_ext}", filename , packing_slip.to_s)
       end
 
       def create_csvs(group)

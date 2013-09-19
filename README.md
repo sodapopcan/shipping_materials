@@ -11,7 +11,7 @@ includes packing slips and CSVs for label makers.
 ## Dependencies
 
 `wkhtmltopdf` if used for PDF generation.  The call to it is made as a linux
-command therefore this plugin will not work on Windows yet.
+command therefore this functionality will not work on Windows.
     
 `gzip` is used for the zip functionality.
 
@@ -59,7 +59,7 @@ type.
 
 Because we are creating shipping materials here, at the very least, it is
 assumed you are going to want packing slips.  You may specify a global template
-with the `#pdf` method:
+with the `#html` or `#pdf` methods:
 
 ```ruby
   packager.package orders do
@@ -135,11 +135,11 @@ Here is an example with hashes:
 ```ruby
   group 'Canadian Standard Post' do
     csv(headers: true) {
-      row 'Code' => 'Q',
+      row 'Code'         => 'Q',
           'Order Number' => :number,
-          'Name'     => [ :shipping_address, :name ]
+          'Name'         => [ :shipping_address, :name ]
            # ...
-          'Country'  => [ :shipping_address, :country, :iso ]
+          'Country'      => [ :shipping_address, :country, :iso ]
           
       row line_items: [ 'H', :id, :name, :quantity, :price ]
     }

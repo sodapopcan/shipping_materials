@@ -12,6 +12,7 @@ module ShippingMaterials
           end
         end
       end
+      alias_method :write_html, :write_file
 
       def write_pdf(filename, contents)
         basename = filenameize(File.basename(filename, '.*'))

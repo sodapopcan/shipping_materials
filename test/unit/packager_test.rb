@@ -16,7 +16,7 @@ module ShippingMaterials
 
     def test_dsl
       @packager.package orders do
-        pdf './test/files/template.mustache'
+        html './test/files/template.erb'
 
         sort(:line_items) {
           rule { type == 'Vinyl' }

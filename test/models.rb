@@ -10,6 +10,10 @@ module TestModels
 
   class LineItem
     attr_accessor :id, :name, :quantity, :price, :type, :variant
+
+    def total
+      quantity * price
+    end
   end
 
   class Variant
