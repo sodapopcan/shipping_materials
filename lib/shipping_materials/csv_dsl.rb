@@ -6,28 +6,28 @@ module ShippingMaterials
     attr_reader :headers
 
     def initialize(objects, options={})
-      @objects           = objects
-      @row_maps          = {}
-      @row_map_callbacks = {}
-      @options           = options
+      @objects   = objects
+      @row_maps  = {}
+      @options   = options
     end
 
     # This method is on the complex side. It is a DSL method that
     # performs type-checking and also sets the headers.
     # Be sure to see headers=() defined below
-    def row(collection)
+    def row(collection, callbacks={})
+      @callbacks = callbacks
       if collection.is_a? Array
-        @row_maps[:object] = collection
+        update_row_maps(:object, collection, callbacks)
       elsif collection.is_a? Hash
         f = collection.first
         if f[1].is_a? Array
-          @row_maps[f[0]] = f[1]
+          update_row_maps(f[0], f[1], callbacks)
         elsif f[1].is_a? Hash
           self.headers = f[1]
-          @row_maps[f[0]] = f[1].values
+          update_row_maps(f[0], f[1].values, callbacks)
         else
           self.headers = collection
-          @row_maps[:object] = collection.values
+          update_row_maps(:object, collection.values, callbacks)
         end
       end
     end
@@ -36,12 +36,13 @@ module ShippingMaterials
       CSV.generate do |csv|
         csv << headers if headers?
         @objects.each do |object|
-          @row_maps.each do |context, methods|
+          @row_maps.each do |context, stuff|
+            next unless apply_callbacks(stuff[:callbacks], object)
             if context == :object
-              csv << get_row(object, methods)
+              csv << get_row(object, stuff[:values])
             else
-              object.send(context).each do |c|
-                csv << get_row(c, methods)
+              object.send(context).each do |obj|
+                csv << get_row(obj, stuff[:values])
               end
             end
           end
@@ -63,6 +64,15 @@ module ShippingMaterials
     end
 
     private
+      def apply_callbacks(callbacks, object)
+        return true unless callbacks.any?
+        if callbacks[:if]
+          callbacks[:if].call(object)
+        else
+          true
+        end
+      end
+
       def get_row(object, methods)
         methods.map do |meth|
           if meth.is_a? Symbol
@@ -75,6 +85,12 @@ module ShippingMaterials
             meth
           end
         end
+      end
+
+      def update_row_maps(key, values, callbacks)
+        @row_maps[key] ||= {}
+        @row_maps[key][:values] = values
+        @row_maps[key][:callbacks] = callbacks
       end
   end
 end

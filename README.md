@@ -159,6 +159,24 @@ As demonstrated in the second call to row, you can evalute your row in the
 context of your line items (or other one-to-many relationship) using its method
 name as a key.
 
+### CSV Callbacks
+
+Right now an `if` callback can be provided to the `row` method.  This is useful
+when calling row multiple times and you don't always want all of them to render.
+
+```ruby
+  group 'Canadian Standard Post' do
+    csv(headers: true) {
+      row 'Code'         => 'Q'
+           # ...
+
+      row({ line_items: [ 'H', :id, :name, :quantity, :price ] },
+          if: proc {|o| o.lines_items.size > 1 })
+    }
+  end
+```
+
+
 ### Sorting
 
 While most sorting should probably be done at the query level, Shipping

@@ -8,21 +8,21 @@ module ShippingMaterials
 
       @csv.row(array)
 
-      assert_equal array, @csv.row_maps[:object],
+      assert_equal array, @csv.row_maps[:object][:values],
                   "Passing array to CSVDSL#row does not work"
     end
 
     def test_row_hash
       @csv = ShippingMaterials::CSVDSL.new(orders, headers: true)
       hash = { :order_id => :id,
-              :name     => :name,
-              :static_field => 'A string' }
+               :name     => :name,
+               :static_field => 'A string' }
 
       @csv.row(hash)
 
       assert_equal %w(order_id name static_field), @csv.headers,
                   "CSVDSL headers are not being set properly"
-      assert_equal hash.values, @csv.row_maps[:object],
+      assert_equal hash.values, @csv.row_maps[:object][:values],
                   "CSVDSL row map values not being properly set"
     end
 
@@ -32,7 +32,7 @@ module ShippingMaterials
 
       @csv.row(hash)
 
-      assert_equal hash[:line_items], @csv.row_maps[:line_items],
+      assert_equal hash[:line_items], @csv.row_maps[:line_items][:values],
                   "CSVDSL row map not being set properly when given " \
                   "hash with array"
     end
@@ -51,7 +51,7 @@ module ShippingMaterials
 
       assert_equal %w(order_id name static_field), @csv.headers,
                   "CSVDSL headers should be strings"
-      assert_equal hash[:line_items].values, @csv.row_maps[:line_items],
+      assert_equal hash[:line_items].values, @csv.row_maps[:line_items][:values],
                   "CSVDSL values should match line_item values"
     
     end
@@ -104,11 +104,21 @@ module ShippingMaterials
       assert_equal "1+Andrew\n", @csv.to_csv, "CSV with proc doesn't work"
     end
 
+    def test_callbacks
+      @csv = CSVDSL.new(orders.select {|o| o.id == 1 })
+      @csv.row :order_id      => :id,
+               :name          => :name,
+               :static_fields => 'A string'
+      @csv.row({ :line_items => [:id, :name, :quantity] }, :if => proc {|o| o.line_items.size < 1 })
+      
+      assert_equal "1,Andrew,A string\n", @csv.to_csv
+    end
+
     def test_to_csv
       @csv = CSVDSL.new(orders.select {|o| o.id == 1 }, headers: true)
       @csv.row :order_id       => :id,
-                :name          => :name,
-                :static_fields => 'A string'
+               :name          => :name,
+               :static_fields => 'A string'
 
       @csv.row :line_items => [:id, :name, :quantity]
 
