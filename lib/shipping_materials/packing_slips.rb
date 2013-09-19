@@ -6,15 +6,8 @@ module ShippingMaterials
     end
 
     def to_s
-			if File.extname(@template_file) == '.mustache'
-				t = Mustache.new
-				t.template_file = @template_file
-				t[Config.base_context] = @objects
-				t.render
-			else
-				t = Tilt.new(@template_file)
-				t.render(@objects)
-			end
+      t = Tilt.new(@template_file)
+      t.render(@objects)
     end
 
     alias_method :to_html, :to_s
