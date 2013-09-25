@@ -15,7 +15,6 @@ module ShippingMaterials
     # performs type-checking and also sets the headers.
     # Be sure to see headers=() defined below
     def row(collection, callbacks={})
-      @callbacks = callbacks
       if collection.is_a? Array
         update_row_maps(:object, collection, callbacks)
       elsif collection.is_a? Hash
