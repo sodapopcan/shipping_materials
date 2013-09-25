@@ -36,13 +36,13 @@ module ShippingMaterials
       CSV.generate do |csv|
         csv << headers if headers?
         @objects.each do |object|
-          @row_maps.each do |context, stuff|
-            next unless apply_callbacks(stuff[:callbacks], object)
+          @row_maps.each do |context, data|
+            next unless apply_callbacks(data[:callbacks], object)
             if context == :object
-              csv << get_row(object, stuff[:values])
+              csv << get_row(object, data[:values])
             else
               object.send(context).each do |obj|
-                csv << get_row(obj, stuff[:values])
+                csv << get_row(obj, data[:values])
               end
             end
           end
