@@ -7,7 +7,7 @@ module ShippingMaterials
 
     def initialize(objects, options={})
       @objects   = objects
-      @row_maps  = {}
+      @row_maps  = []
       @options   = options
     end
 
@@ -35,13 +35,13 @@ module ShippingMaterials
       CSV.generate do |csv|
         csv << headers if headers?
         @objects.each do |object|
-          @row_maps.each do |context, data|
-            next unless apply_callbacks(data[:callbacks], object)
-            if context == :object
-              csv << get_row(object, data[:values])
+          @row_maps.each do |row_map|
+            next unless apply_callbacks(row_map[:callbacks], object)
+            if row_map[:context] == :object
+              csv << get_row(object, row_map[:values])
             else
-              object.send(context).each do |obj|
-                csv << get_row(obj, data[:values])
+              object.send(row_map[:context]).each do |obj|
+                csv << get_row(obj, row_map[:values])
               end
             end
           end
@@ -86,10 +86,12 @@ module ShippingMaterials
         end
       end
 
-      def update_row_maps(key, values, callbacks)
-        @row_maps[key] ||= {}
-        @row_maps[key][:values] = values
-        @row_maps[key][:callbacks] = callbacks
+      def update_row_maps(context, values, callbacks)
+        @row_maps << {
+          context: context,
+          values: values,
+          callbacks: callbacks
+        }
       end
   end
 end
