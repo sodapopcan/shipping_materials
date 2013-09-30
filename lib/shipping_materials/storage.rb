@@ -2,7 +2,9 @@ module ShippingMaterials
   class Storage
     class << self
       def write_file(filename, contents)
-        filename = "#{save_path}/#{filename}"
+        basename = filenameize(File.basename(filename, '.*'))
+        extension = File.extname(filename)
+        filename = "#{save_path}/#{basename}#{extension}"
         File.open(filename, 'w') do |fp|
           fp.write(contents)
           if Config.use_s3? && !Config.use_gzip?
