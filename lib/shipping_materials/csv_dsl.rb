@@ -2,11 +2,10 @@ module ShippingMaterials
   class CSVDSL
     require 'csv'
 
-    attr_accessor :objects, :row_maps
+    attr_accessor :row_maps
     attr_reader :headers
 
-    def initialize(objects, options={})
-      @objects   = objects
+    def initialize(options={})
       @row_maps  = []
       @options   = options
     end
@@ -31,10 +30,10 @@ module ShippingMaterials
       end
     end
 
-    def to_csv
+    def generate(objects)
       CSV.generate do |csv|
         csv << headers if headers?
-        @objects.each do |object|
+        objects.each do |object|
           @row_maps.each do |row_map|
             next unless apply_callbacks(row_map[:callbacks], object)
             if row_map[:context] == :object
@@ -48,7 +47,6 @@ module ShippingMaterials
         end
       end
     end
-    alias_method :to_s, :to_csv
 
     def extension
       @options[:extension] || 'csv'

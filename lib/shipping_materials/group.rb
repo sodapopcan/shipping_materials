@@ -17,11 +17,10 @@ module ShippingMaterials
     end
 
     def csv(options={}, &block)
-      if block
-        csv = CSVDSL.new(@objects, options)
-        csv.instance_eval(&block)
-        @csvs << csv
-      end
+      return unless block
+      csv = CSVDSL.new(options)
+      csv.instance_eval(&block)
+      @csvs << csv
     end
   end
 end

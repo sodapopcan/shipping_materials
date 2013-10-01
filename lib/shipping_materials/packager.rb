@@ -54,7 +54,7 @@ module ShippingMaterials
       def create_csvs(group)
         group.csvs.each do |csv|
           filename = Storage.filenameize(group.basename) + '.' + csv.extension
-          Storage.write_file(filename, csv.to_s)
+          Storage.write_file(filename, csv.generate(group.objects))
       end
     end
   end
