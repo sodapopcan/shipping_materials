@@ -31,7 +31,7 @@ module ShippingMaterials
     end
 
     def generate(objects)
-      CSV.generate do |csv|
+      CSV.generate(force_quotes: true) do |csv|
         csv << headers if headers?
         objects.each do |object|
           @row_maps.each do |row_map|
